@@ -1,10 +1,4 @@
-// Rock paper sissors programm! 
-// This code will randomly return "rock", "paper" or "sissors".
-// Pseudocode:
-// PROMPT user to choose rock paper or sissors and STORE answer in variable humanChoice.
-// GET random number between 0 and 2 store number in "randomNumber".
-// use that number in a switch statement and apply "rock" to 0, "paper" to 1 and "sissors" to 2 and store the output in "computerChoice". 
-// FOR LOOP set roundNumber to 1 and run getComputerChoice, getHumanChoice and playRound for 5 rounds. Stop after 5 rounds and alert the user who the winner is.
+// Rock paper sissors program reworked with UI!
 // 
 // Variables
 // 
@@ -114,29 +108,41 @@ function playRound(humanChoice, computerChoice) {
         }
         console.log(`Current score: Human: ${humanScore}, Computer: ${computerScore}`);
         }
-// Function for playing the game for 5 rounds.
-function playGame() {
-    for (roundNumber = 1; roundNumber != 5; roundNumber++) {
-        console.log("Perparing game!");
-        console.log(`Round ${roundNumber} out of ${roundTotal} begining!`);
-        getHumanChoice();
-        getComputerChoice();
 
-        playRound(humanChoice, computerChoice);
-    }
-    if (humanScore > computerScore) {
-        alert(`Final Score! Human: ${humanScore} Computer: ${computerScore}. You win!`);
-    } else if (humanScore < computerScore) {
-        alert(`Final Score! Human: ${humanScore} Computer: ${computerScore}. You lose!`);
-    } else {
-        alert(`Final Score! Human: ${humanScore} Computer: ${computerScore}. The game is a draw!`);
-    }
+// Running area:
+const gameArea = document.querySelector(".gameArea");
+const buttons = document.querySelectorAll("button");
+const output = document.querySelector(".output");
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const sissors = document.querySelector(".sissors");
 
+
+function createPara(string) {
+    const para = document.createElement("p");
+    document.querySelector("p");
+    para.textContent = `You chose ${string}`;
+    output.appendChild(para);
 }
 
 
-// Running area:
 
-playGame();
-
-
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        switch(button) {
+            case rock:
+            console.log("stinky");
+            createPara("Rock!");
+            break;
+        case paper:
+            console.log("paper");
+            createPara("Paper!");
+            break;
+        case sissors:
+            console.log("sissors");
+            createPara("Sissors!");
+            break;
+        }
+    });
+    
+});
