@@ -116,10 +116,9 @@ const output = document.querySelector(".output");
 const rock = document.querySelector(".rock");
 const paper = document.querySelector(".paper");
 const sissors = document.querySelector(".sissors");
-
+const para = document.createElement("p");
 
 function createPara(string) {
-    const para = document.createElement("p");
     document.querySelector("p");
     para.textContent = `You chose ${string}`;
     output.appendChild(para);
@@ -129,9 +128,11 @@ function createPara(string) {
 
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
+        if (para) {
+            para.remove();
+        }
         switch(button) {
             case rock:
-            console.log("stinky");
             createPara("Rock!");
             break;
         case paper:
