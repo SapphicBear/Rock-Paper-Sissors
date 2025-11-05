@@ -2,6 +2,22 @@
 // 
 // Variables
 // 
+// DOM variables
+const gameArea = document.querySelector(".gameArea");
+const buttons = document.querySelectorAll("button");
+const output = document.querySelector(".output");
+const rock = document.querySelector(".rock");
+const paper = document.querySelector(".paper");
+const sissors = document.querySelector(".sissors");
+
+const para = document.createElement("p");
+const divComputer = document.createElement("div");
+divComputer.className = "div-computer";
+const roundArea = document.createElement("div");
+roundArea.className = "round-area";
+
+const divHuman = document.createElement("div");
+divHuman.className = "div-human";
 
 // stored choice variables
 let humanChoice = "";
@@ -21,56 +37,42 @@ let roundTotal = 5;
 // Function for the computer's choice of "Rock, paper or sissors!"
 function getComputerChoice() { 
     let randomNumber = Math.floor(Math.random() * 3);
+    document.querySelector(".div-computer");
+    output.appendChild(divComputer);
     switch(randomNumber) {
         case 0:
             console.log("Computer chose: Rock!");
+            para.textContent = "Computer chose: Rock!";
+            divComputer.appendChild(para);
             computerChoice = "rock";
             break;
         case 1: 
             console.log("Chomputer chose: Paper!");
+            para.textContent = "Computer chose: Paper!";
+            divComputer.appendChild(para);
             computerChoice = "paper";
             break;
         case 2: 
             console.log("Computer chose: Sissors!");
+            para.textContent = "Computer chose: Sissors!";
+            divComputer.appendChild(para);
             computerChoice = "sissors";
             break;
     }
 }
-// Function to get the human choice, prompts user to give an answer between the three options!
-function getHumanChoice() {
-    let answer = prompt("Rock, paper or sissors?", "");
-    answer = answer.toLowerCase();
-    switch(answer) {
-        case "rock":
-            console.log("You chose: Rock!");
-            humanChoice = answer;
-            break;
-        case "paper":
-            console.log("You chose: Paper!");
-            humanChoice = answer;
-            break;
-        case "sissors":
-            console.log("You chose: Sissors!");
-            humanChoice = answer;
-            break;
-        default:
-            console.log("Not a valid response.");
-            break;
-    }
-}
+
 
 // Round function
 
 function playRound(humanChoice, computerChoice) {
-    
+    document.querySelector(".round-area");
+    output.appendChild(roundArea);
         switch(true) {
             case humanChoice === "rock":
             if (computerChoice === "sissors") {
-                console.log("Rock beats sissors! You win! One point to team Human!");
-                ++humanScore;
+                roundOutputWin("Rock", "Sissors");
             } else if (computerChoice === "paper") {
-                console.log("Paper beats rock! You lose! One point to team Computer!");
-                ++computerScore;
+                roundOutputLose("Rock", "Paper");
             } else {
                 console.log("The round is tied! Both get a point!");
                 ++computerScore;
@@ -80,11 +82,9 @@ function playRound(humanChoice, computerChoice) {
 
             case humanChoice === "paper":
                 if (computerChoice === "rock") {
-                    console.log("Paper beats rock! You win! One point to team Human!");
-                    ++humanScore;
+                    roundOutputWin("Paper", "Rock");
                 } else if (computerChoice === "sissors") {
-                    console.log("Sissors beats paper! You lose! One point to team computer!");
-                    ++computerScore;
+                    roundOutputLose("Paper", "Sissors");
                 } else {
                 console.log("The round is tied! Both get a point!");
                 ++computerScore;
@@ -93,12 +93,11 @@ function playRound(humanChoice, computerChoice) {
                 break;
 
             case humanChoice === "sissors":
-                if (computerChoice === "rock") {
-                    console.log("Rock beats sissors! You lose! One point to team Computer!");
-                    ++computerScore;
-                } else if (computerChoice === "paper") {
+                if (computerChoice === "paper") {
                     console.log("Sissors beats paper! You win! One point to team Human!");
-                    ++humanScore;
+                    roundOutputWin("Sissors", "Paper");
+                } else if (computerChoice === "rock") {
+                    roundOutputLose("Sissors", "Rock");
                 } else {
                 console.log("The round is tied! Both get a point!");
                 ++computerScore;
@@ -109,39 +108,58 @@ function playRound(humanChoice, computerChoice) {
         console.log(`Current score: Human: ${humanScore}, Computer: ${computerScore}`);
         }
 
+
+function roundOutputWin(humanChoice, computerChoice) {
+    document.querySelector(".round-area");
+    document.querySelector("p");
+    para.textContent = `${humanChoice} beats ${computerChoice}! You win! 1 point to the Human!`;
+    roundArea.appendChild(para);
+    humanScore++;
+}
+function roundOutputLose(humanChoice, computerChoice) {
+    document.querySelector(".round-area");
+    document.querySelector("p");
+    para.textContent = `${computerChoice} beats ${humanChoice}! You lose! 1 point to the Computer!`;
+    roundArea.appendChild(para);
+    computerScore++;
+}
+
 // Running area:
-const gameArea = document.querySelector(".gameArea");
-const buttons = document.querySelectorAll("button");
-const output = document.querySelector(".output");
-const rock = document.querySelector(".rock");
-const paper = document.querySelector(".paper");
-const sissors = document.querySelector(".sissors");
-const para = document.createElement("p");
+
 
 function createPara(string) {
+    output.appendChild(divHuman);
+    document.querySelector(".div-human");
     document.querySelector("p");
     para.textContent = `You chose ${string}`;
-    output.appendChild(para);
+    divHuman.appendChild(para);
 }
 
 
-
+// Get human Choice
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
-        if (para) {
-            para.remove();
-        }
+        
         switch(button) {
             case rock:
             createPara("Rock!");
+            humanChoice = "rock";
+            getComputerChoice();
+            playRound(humanChoice, computerChoice);
             break;
         case paper:
             console.log("paper");
             createPara("Paper!");
+            getComputerChoice();
+            humanChoice = "paper";
+            playRound(humanChoice, computerChoice);
             break;
         case sissors:
             console.log("sissors");
             createPara("Sissors!");
+            getComputerChoice();
+            humanChoice = "sissors";
+            playRound(humanChoice, computerChoice);
             break;
         }
     });
