@@ -6,14 +6,38 @@
     <title>Document</title>
     <script src="./rockPaperSissors.js" defer></script>
     <style>
+        .game-area  {
+            padding:10px;
+            text-align: center;
+            width: 400px;
+        }
         .game-button {
             padding: 10px;
+            color:white;
+            background-color: teal;
+            border-radius:15px;
+            max-width: 200px;
         }
 
         .output {
             background-color: pink;
             border:2px red solid;
             min-height:100px;
+        }
+        .div-human {
+            background-color:blue;
+            color:white;
+        }
+        .div-computer {
+            background-color:white;
+        }
+        .round-area {
+            background-color:yellow;
+        }
+        .winner-box {
+            background-color: darkred;
+            box-shadow:black 2px 2px 0px;
+            color: white;
         }
     </style>
 </head>
@@ -23,10 +47,10 @@
         <button class="game-button rock">Rock!</button>
         <button class="game-button paper">Paper!</button>
         <button class="game-button sissors">Sissors!</button>
-    </div>
+    
     <!-- output DOM mod -->
-    <div class="output"></div>
-
+        <div class="output"></div>
+    </div>
 
     
 </body>

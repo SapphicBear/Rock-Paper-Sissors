@@ -10,14 +10,15 @@ const rock = document.querySelector(".rock");
 const paper = document.querySelector(".paper");
 const sissors = document.querySelector(".sissors");
 
-const para = document.createElement("p");
+const para = document.querySelector("p");
+
 const divComputer = document.createElement("div");
-divComputer.className = "div-computer";
+divComputer.className = "div-computer remove";
 const roundArea = document.createElement("div");
-roundArea.className = "round-area";
+roundArea.className = "round-area remove";
 
 const divHuman = document.createElement("div");
-divHuman.className = "div-human";
+divHuman.className = "div-human remove";
 
 // stored choice variables
 let humanChoice = "";
@@ -38,6 +39,8 @@ let roundTotal = 5;
 function getComputerChoice() { 
     let randomNumber = Math.floor(Math.random() * 3);
     document.querySelector(".div-computer");
+    const para = document.createElement("p");
+    para.className = "computerChoiceP remove";
     output.appendChild(divComputer);
     switch(randomNumber) {
         case 0:
@@ -74,9 +77,7 @@ function playRound(humanChoice, computerChoice) {
             } else if (computerChoice === "paper") {
                 roundOutputLose("Rock", "Paper");
             } else {
-                console.log("The round is tied! Both get a point!");
-                ++computerScore;
-                ++humanScore;
+                roundOutputTie();
             }
             break;
 
@@ -86,60 +87,101 @@ function playRound(humanChoice, computerChoice) {
                 } else if (computerChoice === "sissors") {
                     roundOutputLose("Paper", "Sissors");
                 } else {
-                console.log("The round is tied! Both get a point!");
-                ++computerScore;
-                ++humanScore;
+                roundOutputTie();
             }
                 break;
 
             case humanChoice === "sissors":
                 if (computerChoice === "paper") {
-                    console.log("Sissors beats paper! You win! One point to team Human!");
                     roundOutputWin("Sissors", "Paper");
                 } else if (computerChoice === "rock") {
                     roundOutputLose("Sissors", "Rock");
                 } else {
-                console.log("The round is tied! Both get a point!");
-                ++computerScore;
-                ++humanScore;
+                roundOutputTie();
             }
                 break;
         }
-        console.log(`Current score: Human: ${humanScore}, Computer: ${computerScore}`);
+        const para = document.createElement("p");
+        para.className = "score remove";
+        para.textContent = (`Current score: Human: ${humanScore}, Computer: ${computerScore}`);
+        output.appendChild(para);
+        if (roundNumber === roundTotal) {
+            announceWinner(humanScore, computerScore);
+            humanScore = 0;
+            computerScore = 0;
+            roundNumber = 0;
+        }
         }
 
 
 function roundOutputWin(humanChoice, computerChoice) {
+    const para = document.createElement("p");
+    para.textContent = "";
     document.querySelector(".round-area");
-    document.querySelector("p");
+    para.className = "paraRoundWin remove";
     para.textContent = `${humanChoice} beats ${computerChoice}! You win! 1 point to the Human!`;
     roundArea.appendChild(para);
     humanScore++;
+    roundNumber++;
 }
 function roundOutputLose(humanChoice, computerChoice) {
     document.querySelector(".round-area");
-    document.querySelector("p");
+    const para = document.createElement("p");
+    para.textContent = "";
+    para.className = "paraRoundLose remove";
     para.textContent = `${computerChoice} beats ${humanChoice}! You lose! 1 point to the Computer!`;
     roundArea.appendChild(para);
     computerScore++;
+    roundNumber++;
 }
 
-// Running area:
+function roundOutputTie() {
+    document.querySelector(".round-area");
+    const para = document.createElement("p");
+    para.textContent = "";
+    document.querySelector("p");
+    para.className = "paraRoundTie remove";
+    para.textContent = `Round Tied! Both parties recieve 1 point!`;
+    roundArea.appendChild(para);
+    computerScore++;
+    humanScore++;
+    roundNumber++;
+}
 
+// Create String for humanChoice:
 
 function createPara(string) {
+    const para = document.createElement("p");
     output.appendChild(divHuman);
     document.querySelector(".div-human");
     document.querySelector("p");
+    para.className = "divHumanPara remove";
     para.textContent = `You chose ${string}`;
     divHuman.appendChild(para);
 }
+// reset function 
+function reset() {
+    const content = document.querySelectorAll(".remove");
+    if (content) {
+        document.querySelectorAll(".remove").forEach(e => e.remove());
+    } 
+}
 
+function announceWinner(humanScore, computerScore) {
+    const div = document.createElement("div");
+    div.className = "winner-box remove";
+    if (humanScore > computerScore) {
+        div.textContent = `You win! Your final score was: Human ${humanScore} Computer ${computerScore}!`;
+    } else {
+        div.textContent = `You lose! Your final score was: Human ${humanScore} Computer ${computerScore}!`;
+    }
+    output.appendChild(div);
+}
 
 // Get human Choice
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
-        
+        reset();
         switch(button) {
             case rock:
             createPara("Rock!");
